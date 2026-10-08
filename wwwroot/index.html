@@ -174,6 +174,7 @@
             pointsLayer.clearLayers();
 
             // Simple WKT to Polygon rough parsing for the prototype bounding boxes
+            // Note: This is a basic parser and assumes the WKT is well-formed and represents a single polygon.
             const coords = data.mpa.wkt.replace('POLYGON((', '').replace('))', '').split(', ').map(pair => {
                 const [lon, lat] = pair.split(' ');
                 return [parseFloat(lat), parseFloat(lon)];
@@ -197,6 +198,7 @@
             ).join('');
 
             // Panel B: Years
+            // Highlight gaps in red, but show a small bar for visibility
             const gapYears = data.years.filter(y => y.isGap).map(y => y.year);
             document.getElementById('yearGaps').innerText = gapYears.length ? `Data Gaps (0 records): ${gapYears.join(', ')}` : 'No temporal gaps in the last 15 years.';
             if(yChart) yChart.destroy();
@@ -214,6 +216,7 @@
             });
 
             // Panel C: Taxa
+            // Highlight gaps in red, but show a small bar for visibility
             const gapTaxa = data.taxa.filter(t => t.isGap).map(t => t.phylum);
             document.getElementById('taxonGaps').innerText = gapTaxa.length ? `Missing Reference Phyla: ${gapTaxa.join(', ')}` : 'All reference phyla present.';
             if(tChart) tChart.destroy();
